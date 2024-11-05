@@ -11,7 +11,7 @@
     "lint:fix": "eslint . --fix"
   },
   "keywords": [],
-  "author": "César Guerra",
+  "author": "Erick Ponce",
   "license": "ISC",
   "dependencies": {
     "dotenv": "^16.4.5",
