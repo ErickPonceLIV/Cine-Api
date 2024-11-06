@@ -15,7 +15,10 @@ const userSchema = new mongoose.Schema({
   phone: { type: String },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  username: { type: String, required: true, unique: true }
+  username: { type: String, required: true, unique: true },
+  isActive: { type: Boolean, default: true }
+}, {
+  timestamps: true // Agrega los campos createdAt y updatedAt
 })
 
 const User = mongoose.model('User', userSchema)
