@@ -7,6 +7,8 @@ const movieSchema = new mongoose.Schema({
   rating: { type: Number, required: true, min: 0, max: 10 },
   duration: { type: Number, required: true }, // En minutos
   genre: { type: String, required: true }
+}, {
+  timestamps: true // Agrega los campos createdAt y updatedAt
 })
 
 const Movie = mongoose.model('Movie', movieSchema)
