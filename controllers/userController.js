@@ -50,7 +50,7 @@ const updateUser = async (req, res) => {
 const deleteUserById = async (req, res) => {
   if (req.query.destroy === 'true') {
     try {
-      const deleteUser = await User.findByIdAndDelete(req.params.UserId)
+      const deleteUser = await User.findByIdAndDelete(req.params.userId)
       if (!deleteUser) {
         return res.status(404).json({ error: 'User not found' })
       }
@@ -61,7 +61,7 @@ const deleteUserById = async (req, res) => {
   }
   // SOFT DELETE, borrado logico, cambio de estado de isActive
   try {
-    const userUpdate = await User.findByIdAndUpdate(req.params.id, { isActive: false }, { new: true })
+    const userUpdate = await User.findByIdAndUpdate(req.params.id, { isActive: false }, { new: false })
     if (userUpdate === null || userUpdate === false) {
       return res.status(404).json({ error: 'User not found' })
     }
