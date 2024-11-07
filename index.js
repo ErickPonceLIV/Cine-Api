@@ -2,6 +2,8 @@ import express from 'express'
 import { connect } from './config/dataBase.js'
 import userRoutes from './routes/userRoutes.js'
 import morgan from 'morgan'
+import ticketsRoutes from './routes/ticketRoutes.js'
+import movieRoutes from './routes/movieRoutes.js'
 
 const api = express()
 api.use(express.json())
@@ -16,6 +18,8 @@ const PORT = process.env.PORT || 3000
 
 // Aquí van las rutas
 api.use('/api/v1/', userRoutes)
+api.use('/api/v1', ticketsRoutes)
+api.use('/api/v1', movieRoutes)
 
 // Conectamos a la base de datos
 connect().then(() => {
