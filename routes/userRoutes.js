@@ -6,7 +6,7 @@ const UserRoutes = express.Router()
 UserRoutes.get('/users', userController.getAllUsers)
 UserRoutes.get('/users/:id', userController.getUserById)
 UserRoutes.post('/users', userController.createUser)
-UserRoutes.put('/users/:id', userController.updateUser)
-UserRoutes.delete('/users/:id', userController.deleteUser)
+UserRoutes.patch('/users/:id', userController.updateUser)
+UserRoutes.delete('/users/:id', userController.deleteUserById)
 
 export default UserRoutes

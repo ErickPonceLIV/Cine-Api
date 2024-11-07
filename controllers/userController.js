@@ -15,7 +15,7 @@ const createUser = async (req, res) => {
 // READ
 const getAllUsers = async (req, res) => {
   try {
-    const users = await User.findAll()
+    const users = await User.find()
     res.status(200).json(users)
   } catch (error) {
     res.status(400).json({ error: error.message })
@@ -46,12 +46,28 @@ const updateUser = async (req, res) => {
   }
 }
 // DELETE
-const deleteUser = async (req, res) => {
+// Borrado físico: Voy a comprobar si existe un query string llamado 'destroy' y si su valor es 'true' voy a borrar el resitro de la base de datos. ?destroy=true
+const deleteUserById = async (req, res) => {
+  if (req.query.destroy === 'true') {
+    try {
+      const deleteUser = await User.findByIdAndDelete(req.params.UserId)
+      if (!deleteUser) {
+        return res.status(404).json({ error: 'User not found' })
+      }
+      res.status(204).json({ message: 'User deleted' })
+    } catch (error) {
+      res.status(400).json({ error: error.message })
+    }
+  }
+  // SOFT DELETE, borrado logico, cambio de estado de isActive
   try {
-
+    const userUpdate = await User.findByIdAndUpdate(req.params.id, { isActive: false }, { new: true })
+    if (userUpdate === null || userUpdate === false) {
+      return res.status(404).json({ error: 'User not found' })
+    }
   } catch (error) {
-
+    res.status(400).json({ message: 'Error Deleting User', error })
   }
 }
 
-export { createUser, getAllUsers, getUserById, updateUser, deleteUser }
+export { createUser, getAllUsers, getUserById, updateUser, deleteUserById }
