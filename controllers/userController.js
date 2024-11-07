@@ -8,10 +8,10 @@ import jwt from 'jwt-simple'
 // CREATE aqui implementare el register y login
 // Registrar un nuevo usuario
 const register = async (req, res) => {
-  const { name, email, password, role } = req.body
+  const { dni, name, lastName, birthdate, phone, email, password, role } = req.body
 
   // Validaciones básicas
-  if (!name || !email || !password || !role) {
+  if (!name || !email || !password || !role || !dni || !lastName || !birthdate || !phone) {
     return res.status(400).send('Process failed: Incomplete data')
   }
 

@@ -2,10 +2,10 @@ import Movie from '../models/Movie.js'
 
 // CREATE Movie
 const createMovie = async (req, res) => {
-  const { title, genre, duration, releaseDate } = req.body
+  const { title, genre, duration, releaseDate, director, rating } = req.body
 
   // Validaciones
-  if (!title || !genre || !duration || !releaseDate) {
+  if (!title || !genre || !duration || !releaseDate || !director || !rating) {
     return res.status(400).json({ message: 'All fields are required' })
   }
 
@@ -55,14 +55,28 @@ const updateMovieById = async (req, res) => {
 
 // DELETE Movie
 const deleteMovieById = async (req, res) => {
+  if (!req.params.movieId.match(/^[0-9a-fA-F]{24}$/)) {
+    return res.status(400).json({ message: 'Error, invalid movie' })
+  }
+  if (req.query.destroy === 'true') {
+    try {
+      const movie = await Movie.findByIdAndDelete(req.params.movieId)
+      if (!movie) {
+        return res.status(404).json({ message: 'Movie not found' })
+      }
+      res.status(204).end()
+    } catch (error) {
+      res.status(500).json({ message: error.message })
+    }
+  }
+  // SOFT DELETE, borrado logico, cambio de estado de isActive
   try {
-    const movie = await Movie.findByIdAndDelete(req.params.movieId)
-    if (!movie) {
+    const movieUpdate = await Movie.findByIdAndUpdate(req.params.id, { isActive: false }, { new: false })
+    if (movieUpdate === null || movieUpdate === false) {
       return res.status(404).json({ message: 'Movie not found' })
     }
-    res.status(204).end()
   } catch (error) {
-    res.status(500).json({ message: error.message })
+    res.status(400).json({ message: 'Error Deleting Movie', error })
   }
 }
 
