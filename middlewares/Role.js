@@ -12,4 +12,11 @@ const IsEmployee = (req, res, next) => {
   next()
 }
 
-export { isAdmin, IsEmployee }
+const isCostumer = (req, res, next) => {
+  if (req.role !== 'COSTUMER') {
+    return res.status(403).json({ message: 'Forbidden' })
+  }
+  next()
+}
+
+export { isAdmin, IsEmployee, isCostumer }

@@ -1,14 +1,15 @@
 import express from 'express'
 import * as userController from '../controllers/userController.js'
-import { isAdmin } from '../middlewares/IsAdminOrEmployee.js'
+import { isAdmin, IsEmployee } from '../middlewares/Role.js'
+import { isAuth } from '../middlewares/isAuth.js'
 
 const UserRoutes = express.Router()
 
-UserRoutes.get('/users', isAdmin, userController.getAllUsers)
-UserRoutes.get('/users/:id', isAdmin, userController.getUserById)
+UserRoutes.get('/users', isAuth, isAdmin, IsEmployee, userController.getAllUsers)
+UserRoutes.get('/users/:id', isAuth, isAdmin, userController.getUserById)
 UserRoutes.post('/login', userController.login)
 UserRoutes.post('register', userController.register)
-UserRoutes.patch('/users/:id', isAdmin, userController.updateUser)
-UserRoutes.delete('/users/:id', isAdmin, userController.deleteUserById)
+UserRoutes.patch('/users/:id', isAuth, isAdmin, userController.updateUser)
+UserRoutes.delete('/users/:id', isAuth, isAdmin, userController.deleteUserById)
 
 export default UserRoutes
