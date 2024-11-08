@@ -1,14 +1,15 @@
 // en este controlador pondremos las funciones para el login y el register
-import { User } from '../models/User.js'
+import User from '../models/User.js'
 import bcrypt from 'bcrypt'// para encriptar las contraseñas
 import jwt from 'jwt-simple'
 
 // Registrar un nuevo usuario
+// Registrar un nuevo usuario
 const register = async (req, res) => {
-  const { dni, name, lastName, birthdate, phone, email, password, role } = req.body
+  const { dni, name, lastName, birthdate, phone, email, password, role, username } = req.body
 
   // Validaciones básicas
-  if (!name || !email || !password || !role || !dni || !lastName || !birthdate || !phone) {
+  if (!name || !email || !password || !role || !dni || !lastName || !birthdate || !phone || !username) {
     return res.status(400).send('Process failed: Incomplete data')
   }
 
@@ -17,12 +18,17 @@ const register = async (req, res) => {
     const saltRounds = 10 // Número de veces que se aplica el algoritmo de hashing
     const hashedPassword = await bcrypt.hash(password, saltRounds)
 
-    // Crear el nuevo usuario con la contraseña encriptada
+    // Crear el nuevo usuario con todos los datos requeridos
     const newUser = await User.create({
+      dni,
       name,
+      lastName,
+      birthdate,
+      phone,
       email,
       password: hashedPassword,
-      role
+      role,
+      username
     })
 
     // Eliminar la contraseña en la respuesta por seguridad

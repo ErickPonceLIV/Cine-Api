@@ -5,7 +5,9 @@ import userRoutes from './routes/userRoutes.js'
 import ticketsRoutes from './routes/ticketRoutes.js'
 import movieRoutes from './routes/movieRoutes.js'
 import AuthRoutes from './routes/authRoutes.js'
+import dotenv from 'dotenv'
 
+dotenv.config()
 const api = express()
 api.use(express.json())
 
